@@ -1,0 +1,36 @@
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+
+http:
+  routers:
+    app:
+      rule: "Host(`gestorempleados.duckdns.org`)"
+      service: app
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+
+  services:
+    app:
+      loadBalancer:
+        servers:
+          - url: "http://app:8000"
+
+certResolvers:
+  letsencrypt:
+    acme:
+      email: robertogael664@gmail.com
+      storage: /acme.json
+      httpChallenge:
+        entryPoint: web
+
+api:
+  dashboard: true
+  insecure: true
+
+log:
+  level: DEBUG

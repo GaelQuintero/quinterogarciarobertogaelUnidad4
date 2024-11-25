@@ -1,0 +1,38 @@
+
+services:
+  app:
+    image: gestor-empleados-app
+    container_name: gestor-empleados-app
+    ports:
+      - "8000:8000"
+    networks:
+      - nginx_network
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=gestor-empleados
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+  db:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: gestor-empleados
+    networks:
+      - nginx_network
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "8080:80"
+      - "8443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./certs:/etc/nginx/certs  # Montar la carpeta donde están los certificados
+    networks:
+      - nginx_network
+
+networks:
+  nginx_network:
+    driver: bridge
