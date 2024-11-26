@@ -28,8 +28,9 @@ services:
       - "8080:80"
       - "8443:443"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./certs:/etc/nginx/certs  # Montar la carpeta donde están los certificados
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - /var/www/html:/var/www/html
+      - /opt/lampp/htdocs/quinterogarciarobertogaelUnidad4/gestor-empleados/certs:/etc/nginx/certs:ro
     networks:
       - nginx_network
 
